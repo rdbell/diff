@@ -9,7 +9,7 @@ import (
 	"strconv"
 )
 
-//renderSlice - handle slice rendering for patch
+// renderSlice - handle slice rendering for patch
 func (d *Differ) renderSlice(c *ChangeValue) {
 
 	var err error
@@ -58,9 +58,10 @@ func (d *Differ) renderSlice(c *ChangeValue) {
 	c.swap(&x) //containers must swap out the parent Value
 }
 
-//deleteSliceEntry - deletes are special, they are handled differently based on options
-//              container type etc. We have to have special handling for each
-//              type. Set values are more generic even if they must be instanced
+// deleteSliceEntry - deletes are special, they are handled differently based on options
+//
+//	container type etc. We have to have special handling for each
+//	type. Set values are more generic even if they must be instanced
 func (d *Differ) deleteSliceEntry(c *ChangeValue) {
 	//for a slice with only one element
 	if c.ParentLen() == 1 && c.index != -1 {
