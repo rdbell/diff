@@ -9,7 +9,7 @@ import (
 	"strconv"
 )
 
-//renderSlice - handle slice rendering for patch
+// renderSlice - handle slice rendering for patch
 func (d *Differ) renderSlice(c *ChangeValue) {
 
 	var err error
@@ -17,17 +17,8 @@ func (d *Differ) renderSlice(c *ChangeValue) {
 
 	//field better be an index of the slice
 	if c.index, err = strconv.Atoi(field); err != nil {
-		//if struct element is has identifier, use it instead
-		if identifier(d.TagName, reflect.Zero(c.target.Type().Elem())) != nil {
-			for c.index = 0; c.index < c.Len(); c.index++ {
-				if identifier(d.TagName, c.Index(c.index)) == field {
-					break
-				}
-			}
-		} else {
-			c.AddError(NewErrorf("invalid index in path. %s is not a number", field).
-				WithCause(err))
-		}
+		c.AddError(NewErrorf("invalid index in path. %s is not a number", field).
+			WithCause(err))
 	}
 	var x reflect.Value
 	if c.Len() > c.index {
@@ -58,9 +49,10 @@ func (d *Differ) renderSlice(c *ChangeValue) {
 	c.swap(&x) //containers must swap out the parent Value
 }
 
-//deleteSliceEntry - deletes are special, they are handled differently based on options
-//              container type etc. We have to have special handling for each
-//              type. Set values are more generic even if they must be instanced
+// deleteSliceEntry - deletes are special, they are handled differently based on options
+//
+//	container type etc. We have to have special handling for each
+//	type. Set values are more generic even if they must be instanced
 func (d *Differ) deleteSliceEntry(c *ChangeValue) {
 	//for a slice with only one element
 	if c.ParentLen() == 1 && c.index != -1 {
